@@ -13,10 +13,6 @@ repositories {
     maven { url = uri("https://jitpack.io") }
 }
 
-rootProject.plugins.withType<NodeJsRootPlugin> {
-    the<NodeJsRootExtension>().download = false
-}
-
 tasks {
     withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "1.8"
