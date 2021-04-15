@@ -68,8 +68,7 @@ typealias IdOrIdList = Any
 /**
  * An object specifying properties and values to match when searching. Produces bookmarks matching
         all properties.
- * @param query A string of words and quoted phrases that are matched against bookmark URLs and
-        titles.
+ * @param query A string of words that are matched against bookmark URLs and titles.
  * @param url The URL of the bookmark; matches verbatim. Note that folders have no URL.
  * @param title The title of the bookmark; matches verbatim.
  */
@@ -80,10 +79,9 @@ class Query(
 )
 
 /**
- * Either a string of words and quoted phrases that are matched against bookmark URLs and titles, or
-        an object. If an object, the properties <code>query</code>, <code>url</code>, and
-        <code>title</code> may be specified and bookmarks matching all specified properties will be
-        produced. */
+ * Either a string of words that are matched against bookmark URLs and titles, or an object. If an
+        object, the properties <code>query</code>, <code>url</code>, and <code>title</code> may be
+        specified and bookmarks matching all specified properties will be produced. */
 typealias Query2 = Any
 
 class Destination(var parentId: String? = null, var index: Int? = null)

@@ -41,6 +41,16 @@ class ImageDataType() {
 typealias ColorValue = Any
 
 /**
+ * Information sent when a browser action is clicked.
+ * @param modifiers An array of keyboard modifiers that were held while the menu item was clicked.
+ * @param button An integer value of button by which menu item was clicked.
+ */
+class OnClickData(
+    var modifiers: Array<String>,
+    var button: Int? = null
+)
+
+/**
  * The string the browser action should display when moused over. */
 typealias Title = Any
 
@@ -139,8 +149,9 @@ external class BrowserActionNamespace {
      * Fired when a browser action icon is clicked.  This event will not fire if the browser action
             has a popup.
      *
-     * @param tab null */
-    val onClicked: Event<(tab: Tab) -> Unit>
+     * @param tab null
+     * @param info null */
+    val onClicked: Event<(tab: Tab, info: OnClickData?) -> Unit>
 
     /**
      * Sets the title of the browser action. This shows up in the tooltip.

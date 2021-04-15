@@ -10,6 +10,7 @@ import kotlin.js.Promise
         object). If absent, defaults to 0 (which would remove all browsing data).
  * @param hostnames Only remove data associated with these hostnames (only applies to cookies and
         localStorage).
+ * @param cookieStoreId Only remove data associated with this specific cookieStoreId.
  * @param originTypes An object whose properties specify which origin types ought to be cleared. If
         this object isn't specified, it defaults to clearing only "unprotected" origins. Please
         ensure that you <em>really</em> want to remove application data before adding 'protectedWeb'
@@ -18,6 +19,7 @@ import kotlin.js.Promise
 class RemovalOptions(
     var since: Date? = null,
     var hostnames: Array<String>? = null,
+    var cookieStoreId: String? = null,
     var originTypes: OriginTypes? = null
 )
 

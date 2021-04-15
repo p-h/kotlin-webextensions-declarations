@@ -94,6 +94,10 @@ class GetInfo2(
 typealias Url = Any
 
 /**
+ * If true, opens an active window. If false, opens an inactive window. */
+typealias Focused = Any
+
+/**
  * @param url A URL or array of URLs to open as tabs in the window. Fully-qualified URLs must
         include a scheme (i.e. 'http://www.google.com', not 'www.google.com'). Relative URLs will be
         relative to the current page within the extension. Defaults to the New Tab Page.
@@ -108,6 +112,7 @@ typealias Url = Any
         defaults to a natural width.
  * @param height The height in pixels of the new window, including the frame. If not specified
         defaults to a natural height.
+ * @param focused If true, opens an active window. If false, opens an inactive window.
  * @param incognito Whether the new window should be an incognito window.
  * @param type Specifies what type of browser window to create. The 'panel' and 'detached_panel'
         types create a popup unless the '--enable-panels' flag is set.
@@ -125,6 +130,7 @@ class CreateData(
     var top: Int? = null,
     var width: Int? = null,
     var height: Int? = null,
+    var focused: Focused? = null,
     var incognito: Boolean? = null,
     var type: CreateType? = null,
     var state: WindowState? = null,

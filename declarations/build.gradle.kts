@@ -1,5 +1,6 @@
 plugins {
     id("org.jetbrains.kotlin.js")
+    `maven-publish`
 }
 
 repositories {

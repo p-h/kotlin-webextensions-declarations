@@ -55,6 +55,12 @@ external class GeckoProfilerNamespace {
     fun resume(): Promise<Any>
 
     /**
+     * Gathers the profile data from the current profiling session, and writes it to disk. The
+            returned promise resolves to a path that locates the created file.
+     */
+    fun dumpProfileToFile(fileName: String): Promise<Any>
+
+    /**
      * Gathers the profile data from the current profiling session.
      */
     fun getProfile(): Promise<Any>
@@ -64,6 +70,12 @@ external class GeckoProfilerNamespace {
             an array buffer that contains a JSON string.
      */
     fun getProfileAsArrayBuffer(): Promise<Any>
+
+    /**
+     * Gathers the profile data from the current profiling session. The returned promise resolves to
+            an array buffer that contains a gzipped JSON string.
+     */
+    fun getProfileAsGzippedArrayBuffer(): Promise<Any>
 
     /**
      * Gets the debug symbols for a particular library.

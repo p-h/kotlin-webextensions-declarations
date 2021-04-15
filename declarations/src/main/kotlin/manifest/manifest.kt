@@ -12,31 +12,33 @@ typealias OptionalPermission = Any
  */
 @Suppress("NOTHING_TO_INLINE", "UnsafeCastFromDynamic")
 class WebExtensionManifest(
-    var browser_action: Browser_action? = null,
     var chrome_settings_overrides: Chrome_settings_overrides? = null,
     var commands: Commands2? = null,
     var devtools_page: ExtensionURL? = null,
+    var omnibox: Omnibox? = null,
+    var sidebar_action: Sidebar_action? = null,
+    var chrome_url_overrides: Chrome_url_overrides? = null,
+    var browser_action: Browser_action? = null,
     var experiment_apis: Experiment_apis? = null,
     var protocol_handlers: Array<ProtocolHandler>? = null,
     var default_locale: String? = null,
+    var l10n_resources: Array<String>? = null,
     var minimum_chrome_version: String? = null,
     var minimum_opera_version: String? = null,
     var icons: Icons? = null,
     var incognito: String? = null,
-    var background: Background3? = null,
+    var background: Background4? = null,
     var options_ui: Options_ui? = null,
     var content_scripts: Array<ContentScript>? = null,
-    var content_security_policy: String? = null,
+    var content_security_policy: Content_security_policy2? = null,
     var permissions: Array<PermissionOrOrigin>? = null,
     var optional_permissions: Array<OptionalPermissionOrOrigin>? = null,
     var web_accessible_resources: Array<String>? = null,
     var developer: Developer? = null,
     var hidden: Boolean? = null,
-    var omnibox: Omnibox? = null,
     var page_action: Page_action? = null,
-    var sidebar_action: Sidebar_action? = null,
+    var telemetry: Telemetry? = null,
     var theme_experiment: ThemeExperiment? = null,
-    var chrome_url_overrides: Chrome_url_overrides? = null,
     var user_scripts: User_scripts? = null
 ) {
     inline operator fun get(key: String): UnrecognizedProperty = asDynamic()[key]
@@ -45,9 +47,13 @@ class WebExtensionManifest(
     }
 }
 
-typealias Permission = Any
-
 typealias KeyName = String
+
+typealias PermissionNoPrompt = Any
+
+typealias OptionalPermissionNoPrompt = Any
+
+typealias Permission = Any
 
 /**
  * Represents a protocol handler definition.
@@ -121,6 +127,8 @@ typealias HttpURL = String
 
 typealias ExtensionURL = String
 
+typealias ExtensionFileUrl = String
+
 typealias ImageDataOrExtensionURL = String
 
 typealias ExtensionID = Any
@@ -185,7 +193,7 @@ typealias ImageData = Any
 
 typealias UnrecognizedProperty = Any
 
-typealias PersistentBackgroundProperty = Boolean
+typealias PersistentBackgroundProperty = Any
 
 /**
  * Represents a native manifest file */
@@ -204,7 +212,6 @@ class ThemeExperiment(
 class ThemeType(
     var images: Images2? = null,
     var colors: Colors2? = null,
-    var icons: Icons2? = null,
     var properties: Properties2? = null
 ) {
     inline operator fun get(key: String): UnrecognizedProperty = asDynamic()[key]
@@ -218,35 +225,18 @@ class ThemeType(
  */
 class ThemeManifest(
     var theme: ThemeType,
+    var dark_theme: ThemeType? = null,
     var default_locale: String? = null,
     var theme_experiment: ThemeExperiment? = null,
-    var icons: Icons3? = null
+    var icons: Icons2? = null
 )
 
-/**
- * @param theme_icons Specifies icons to use for dark and light themes
- * @param default_area Defines the location the browserAction will appear by default.  The default
-        location is navbar.
- */
-@Suppress("NOTHING_TO_INLINE", "UnsafeCastFromDynamic")
-class Browser_action(
-    var default_title: String? = null,
-    var default_icon: IconPath? = null,
-    var theme_icons: Array<ThemeIcons>? = null,
-    var default_popup: String? = null,
-    var browser_style: Boolean? = null,
-    var default_area: String? = null
-) {
-    inline operator fun get(key: String): UnrecognizedProperty = asDynamic()[key]
-    inline operator fun set(key: String, value: UnrecognizedProperty) {
-        asDynamic()[key] = value
-    }
-}
+typealias Keyword = Any
 
 /**
  * @param name A url parameter name
  * @param condition The type of param can be either "purpose" or "pref".
- * @param pref The preference to retreive the value from.
+ * @param pref The preference to retrieve the value from.
  * @param purpose The context that initiates a search, required if condition is "purpose".
  * @param value A url parameter value.
  */
@@ -259,7 +249,9 @@ class Params(
 )
 
 /**
+ * @param search_url_get_params GET parameters to the search_url as a query string.
  * @param search_url_post_params POST parameters to the search_url as a query string.
+ * @param suggest_url_get_params GET parameters to the suggest_url as a query string.
  * @param suggest_url_post_params POST parameters to the suggest_url as a query string.
  * @param encoding Encoding of the search term.
  * @param is_default Sets the default engine to a built-in engine only.
@@ -269,16 +261,19 @@ class Params(
 @Suppress("NOTHING_TO_INLINE", "UnsafeCastFromDynamic")
 class Search_provider(
     var name: String,
-    var keyword: String? = null,
+    var keyword: Keyword? = null,
     var search_url: String,
     var favicon_url: String? = null,
     var suggest_url: String? = null,
     var instant_url: String? = null,
     var image_url: String? = null,
+    var search_url_get_params: String? = null,
     var search_url_post_params: String? = null,
+    var suggest_url_get_params: String? = null,
     var suggest_url_post_params: String? = null,
     var instant_url_post_params: String? = null,
     var image_url_post_params: String? = null,
+    var search_form: String? = null,
     var alternate_urls: Array<String>? = null,
     var prepopulated_id: Int? = null,
     var encoding: String? = null,
@@ -328,73 +323,7 @@ class Commands2() {
 }
 
 @Suppress("NOTHING_TO_INLINE", "UnsafeCastFromDynamic")
-class Experiment_apis() {
-    inline operator fun get(key: String): ExperimentAPI = asDynamic()[key]
-    inline operator fun set(key: String, value: ExperimentAPI) {
-        asDynamic()[key] = value
-    }
-}
-
-@Suppress("NOTHING_TO_INLINE", "UnsafeCastFromDynamic")
-class Icons() {
-    inline operator fun get(key: String): String = asDynamic()[key]
-    inline operator fun set(key: String, value: String) {
-        asDynamic()[key] = value
-    }
-}
-
-@Suppress("NOTHING_TO_INLINE", "UnsafeCastFromDynamic")
-class Background(var page: ExtensionURL, var persistent: PersistentBackgroundProperty? = null) {
-    inline operator fun get(key: String): UnrecognizedProperty = asDynamic()[key]
-    inline operator fun set(key: String, value: UnrecognizedProperty) {
-        asDynamic()[key] = value
-    }
-}
-
-@Suppress("NOTHING_TO_INLINE", "UnsafeCastFromDynamic")
-class Background2(var scripts: Array<ExtensionURL>, var persistent: PersistentBackgroundProperty? =
-        null) {
-    inline operator fun get(key: String): UnrecognizedProperty = asDynamic()[key]
-    inline operator fun set(key: String, value: UnrecognizedProperty) {
-        asDynamic()[key] = value
-    }
-}
-
-typealias Background3 = Any
-
-@Suppress("NOTHING_TO_INLINE", "UnsafeCastFromDynamic")
-class Options_ui(
-    var page: ExtensionURL,
-    var browser_style: Boolean? = null,
-    var chrome_style: Boolean? = null,
-    var open_in_tab: Boolean? = null
-) {
-    inline operator fun get(key: String): dynamic = asDynamic()[key]
-    inline operator fun set(key: String, value: dynamic) {
-        asDynamic()[key] = value
-    }
-}
-
-class Developer(var name: String? = null, var url: String? = null)
-
-@Suppress("NOTHING_TO_INLINE", "UnsafeCastFromDynamic")
 class Omnibox(var keyword: String) {
-    inline operator fun get(key: String): UnrecognizedProperty = asDynamic()[key]
-    inline operator fun set(key: String, value: UnrecognizedProperty) {
-        asDynamic()[key] = value
-    }
-}
-
-@Suppress("NOTHING_TO_INLINE", "UnsafeCastFromDynamic")
-class Page_action(
-    var default_title: String? = null,
-    var default_icon: IconPath? = null,
-    var default_popup: String? = null,
-    var browser_style: Boolean? = null,
-    var show_matches: Array<MatchPattern>? = null,
-    var hide_matches: Array<MatchPatternRestricted>? = null,
-    var pinned: Boolean? = null
-) {
     inline operator fun get(key: String): UnrecognizedProperty = asDynamic()[key]
     inline operator fun set(key: String, value: UnrecognizedProperty) {
         asDynamic()[key] = value
@@ -421,6 +350,132 @@ class Sidebar_action(
 
 class Chrome_url_overrides(var newtab: ExtensionURL? = null)
 
+/**
+ * @param theme_icons Specifies icons to use for dark and light themes
+ * @param default_area Defines the location the browserAction will appear by default.  The default
+        location is navbar.
+ */
+@Suppress("NOTHING_TO_INLINE", "UnsafeCastFromDynamic")
+class Browser_action(
+    var default_title: String? = null,
+    var default_icon: IconPath? = null,
+    var theme_icons: Array<ThemeIcons>? = null,
+    var default_popup: String? = null,
+    var browser_style: Boolean? = null,
+    var default_area: String? = null
+) {
+    inline operator fun get(key: String): UnrecognizedProperty = asDynamic()[key]
+    inline operator fun set(key: String, value: UnrecognizedProperty) {
+        asDynamic()[key] = value
+    }
+}
+
+@Suppress("NOTHING_TO_INLINE", "UnsafeCastFromDynamic")
+class Experiment_apis() {
+    inline operator fun get(key: String): ExperimentAPI = asDynamic()[key]
+    inline operator fun set(key: String, value: ExperimentAPI) {
+        asDynamic()[key] = value
+    }
+}
+
+@Suppress("NOTHING_TO_INLINE", "UnsafeCastFromDynamic")
+class Icons() {
+    inline operator fun get(key: String): ExtensionFileUrl = asDynamic()[key]
+    inline operator fun set(key: String, value: ExtensionFileUrl) {
+        asDynamic()[key] = value
+    }
+}
+
+@Suppress("NOTHING_TO_INLINE", "UnsafeCastFromDynamic")
+class Background(var page: ExtensionURL, var persistent: PersistentBackgroundProperty? = null) {
+    inline operator fun get(key: String): UnrecognizedProperty = asDynamic()[key]
+    inline operator fun set(key: String, value: UnrecognizedProperty) {
+        asDynamic()[key] = value
+    }
+}
+
+@Suppress("NOTHING_TO_INLINE", "UnsafeCastFromDynamic")
+class Background2(var scripts: Array<ExtensionURL>, var persistent: PersistentBackgroundProperty? =
+        null) {
+    inline operator fun get(key: String): UnrecognizedProperty = asDynamic()[key]
+    inline operator fun set(key: String, value: UnrecognizedProperty) {
+        asDynamic()[key] = value
+    }
+}
+
+class Background3(var service_worker: ExtensionURL)
+
+typealias Background4 = Any
+
+@Suppress("NOTHING_TO_INLINE", "UnsafeCastFromDynamic")
+class Options_ui(
+    var page: ExtensionURL,
+    var browser_style: Boolean? = null,
+    var chrome_style: Boolean? = null,
+    var open_in_tab: Boolean? = null
+) {
+    inline operator fun get(key: String): dynamic = asDynamic()[key]
+    inline operator fun set(key: String, value: dynamic) {
+        asDynamic()[key] = value
+    }
+}
+
+/**
+ * @param extension_pages The Content Security Policy used for extension pages.
+ */
+@Suppress("NOTHING_TO_INLINE", "UnsafeCastFromDynamic")
+class Content_security_policy(
+    var extension_pages: String? = null
+) {
+    inline operator fun get(key: String): UnrecognizedProperty = asDynamic()[key]
+    inline operator fun set(key: String, value: UnrecognizedProperty) {
+        asDynamic()[key] = value
+    }
+}
+
+typealias Content_security_policy2 = Any
+
+class Developer(var name: String? = null, var url: String? = null)
+
+@Suppress("NOTHING_TO_INLINE", "UnsafeCastFromDynamic")
+class Page_action(
+    var default_title: String? = null,
+    var default_icon: IconPath? = null,
+    var default_popup: String? = null,
+    var browser_style: Boolean? = null,
+    var show_matches: Array<MatchPattern>? = null,
+    var hide_matches: Array<MatchPatternRestricted>? = null,
+    var pinned: Boolean? = null
+) {
+    inline operator fun get(key: String): UnrecognizedProperty = asDynamic()[key]
+    inline operator fun set(key: String, value: UnrecognizedProperty) {
+        asDynamic()[key] = value
+    }
+}
+
+class Key(
+    var crv: String,
+    var kty: String,
+    var x: String,
+    var y: String
+)
+
+class Public_key(var id: String, var key: Key)
+
+@Suppress("NOTHING_TO_INLINE", "UnsafeCastFromDynamic")
+class Telemetry(
+    var ping_type: String,
+    var schemaNamespace: String,
+    var public_key: Public_key,
+    var study_name: String? = null,
+    var pioneer_id: Boolean? = null
+) {
+    inline operator fun get(key: String): UnrecognizedProperty = asDynamic()[key]
+    inline operator fun set(key: String, value: UnrecognizedProperty) {
+        asDynamic()[key] = value
+    }
+}
+
 @Suppress("NOTHING_TO_INLINE", "UnsafeCastFromDynamic")
 class User_scripts(var api_script: ExtensionURL? = null) {
     inline operator fun get(key: String): UnrecognizedProperty = asDynamic()[key]
@@ -442,7 +497,22 @@ typealias UriTemplate = Any
 
 class Applications(var gecko: FirefoxSpecificProperties? = null)
 
-class Browser_specific_settings(var gecko: FirefoxSpecificProperties? = null)
+@Suppress("NOTHING_TO_INLINE", "UnsafeCastFromDynamic")
+class Edge() {
+    inline operator fun get(key: String): dynamic = asDynamic()[key]
+    inline operator fun set(key: String, value: dynamic) {
+        asDynamic()[key] = value
+    }
+}
+
+@Suppress("NOTHING_TO_INLINE", "UnsafeCastFromDynamic")
+class Browser_specific_settings(var gecko: FirefoxSpecificProperties? = null, var edge: Edge? =
+        null) {
+    inline operator fun get(key: String): UnrecognizedProperty = asDynamic()[key]
+    inline operator fun set(key: String, value: UnrecognizedProperty) {
+        asDynamic()[key] = value
+    }
+}
 
 @Suppress("NOTHING_TO_INLINE", "UnsafeCastFromDynamic")
 class Chrome_resources() {
@@ -530,6 +600,9 @@ class Images2(
     }
 }
 
+/**
+ * @param toolbar_text This color property is an alias of 'bookmark_text'.
+ */
 @Suppress("NOTHING_TO_INLINE", "UnsafeCastFromDynamic")
 class Colors2(
     var tab_selected: ThemeColor? = null,
@@ -570,99 +643,12 @@ class Colors2(
     var sidebar_border: ThemeColor? = null,
     var sidebar_text: ThemeColor? = null,
     var sidebar_highlight: ThemeColor? = null,
-    var sidebar_highlight_text: ThemeColor? = null
+    var sidebar_highlight_text: ThemeColor? = null,
+    var toolbar_field_highlight: ThemeColor? = null,
+    var toolbar_field_highlight_text: ThemeColor? = null
 ) {
     inline operator fun get(key: String): ThemeColor = asDynamic()[key]
     inline operator fun set(key: String, value: ThemeColor) {
-        asDynamic()[key] = value
-    }
-}
-
-@Suppress("NOTHING_TO_INLINE", "UnsafeCastFromDynamic")
-class Icons2(
-    var back: ExtensionURL? = null,
-    var forward: ExtensionURL? = null,
-    var reload: ExtensionURL? = null,
-    var stop: ExtensionURL? = null,
-    var bookmark_star: ExtensionURL? = null,
-    var bookmark_menu: ExtensionURL? = null,
-    var downloads: ExtensionURL? = null,
-    var home: ExtensionURL? = null,
-    var app_menu: ExtensionURL? = null,
-    var cut: ExtensionURL? = null,
-    var copy: ExtensionURL? = null,
-    var paste: ExtensionURL? = null,
-    var new_window: ExtensionURL? = null,
-    var new_private_window: ExtensionURL? = null,
-    var save_page: ExtensionURL? = null,
-    var print: ExtensionURL? = null,
-    var history: ExtensionURL? = null,
-    var full_screen: ExtensionURL? = null,
-    var find: ExtensionURL? = null,
-    var options: ExtensionURL? = null,
-    var addons: ExtensionURL? = null,
-    var developer: ExtensionURL? = null,
-    var synced_tabs: ExtensionURL? = null,
-    var open_file: ExtensionURL? = null,
-    var sidebars: ExtensionURL? = null,
-    var subscribe: ExtensionURL? = null,
-    var text_encoding: ExtensionURL? = null,
-    var email_link: ExtensionURL? = null,
-    var forget: ExtensionURL? = null,
-    var pocket: ExtensionURL? = null,
-    var getmsg: ExtensionURL? = null,
-    var newmsg: ExtensionURL? = null,
-    var address: ExtensionURL? = null,
-    var reply: ExtensionURL? = null,
-    var replyall: ExtensionURL? = null,
-    var replylist: ExtensionURL? = null,
-    var forwarding: ExtensionURL? = null,
-    var delete: ExtensionURL? = null,
-    var junk: ExtensionURL? = null,
-    var file: ExtensionURL? = null,
-    var nextUnread: ExtensionURL? = null,
-    var prevUnread: ExtensionURL? = null,
-    var mark: ExtensionURL? = null,
-    var tag: ExtensionURL? = null,
-    var compact: ExtensionURL? = null,
-    var archive: ExtensionURL? = null,
-    var chat: ExtensionURL? = null,
-    var nextMsg: ExtensionURL? = null,
-    var prevMsg: ExtensionURL? = null,
-    var QFB: ExtensionURL? = null,
-    var conversation: ExtensionURL? = null,
-    var newcard: ExtensionURL? = null,
-    var newlist: ExtensionURL? = null,
-    var editcard: ExtensionURL? = null,
-    var newim: ExtensionURL? = null,
-    var send: ExtensionURL? = null,
-    var spelling: ExtensionURL? = null,
-    var attach: ExtensionURL? = null,
-    var security: ExtensionURL? = null,
-    var save: ExtensionURL? = null,
-    var quote: ExtensionURL? = null,
-    var buddy: ExtensionURL? = null,
-    var join_chat: ExtensionURL? = null,
-    var chat_accounts: ExtensionURL? = null,
-    var calendar: ExtensionURL? = null,
-    var tasks: ExtensionURL? = null,
-    var synchronize: ExtensionURL? = null,
-    var newevent: ExtensionURL? = null,
-    var newtask: ExtensionURL? = null,
-    var editevent: ExtensionURL? = null,
-    var today: ExtensionURL? = null,
-    var category: ExtensionURL? = null,
-    var complete: ExtensionURL? = null,
-    var priority: ExtensionURL? = null,
-    var saveandclose: ExtensionURL? = null,
-    var attendees: ExtensionURL? = null,
-    var privacy: ExtensionURL? = null,
-    var status: ExtensionURL? = null,
-    var freebusy: ExtensionURL? = null,
-    var timezones: ExtensionURL? = null
-) {
-    inline operator fun get(key: String): UnrecognizedProperty = asDynamic()[key]
-    inline operator fun set(key: String, value: UnrecognizedProperty) {
         asDynamic()[key] = value
     }
 }
@@ -677,7 +663,7 @@ class Properties2(var additional_backgrounds_alignment: Array<String>? = null, v
 }
 
 @Suppress("NOTHING_TO_INLINE", "UnsafeCastFromDynamic")
-class Icons3() {
+class Icons2() {
     inline operator fun get(key: String): String = asDynamic()[key]
     inline operator fun set(key: String, value: String) {
         asDynamic()[key] = value

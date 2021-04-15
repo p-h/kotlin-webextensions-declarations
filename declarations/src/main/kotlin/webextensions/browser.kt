@@ -1,10 +1,12 @@
 package webextensions
 
+import activityLog.ActivityLogNamespace
 import alarms.AlarmsNamespace
 import bookmarks.BookmarksNamespace
 import browserAction.BrowserActionNamespace
 import browserSettings.BrowserSettingsNamespace
 import browsingData.BrowsingDataNamespace
+import captivePortal.CaptivePortalNamespace
 import clipboard.ClipboardNamespace
 import commands.CommandsNamespace
 import contentScripts.ContentScriptsNamespace
@@ -27,6 +29,8 @@ import idle.IdleNamespace
 import management.ManagementNamespace
 import manifest.ManifestNamespace
 import menus.MenusNamespace
+import networkStatus.NetworkStatusNamespace
+import normandyAddonStudy.NormandyAddonStudyNamespace
 import notifications.NotificationsNamespace
 import omnibox.OmniboxNamespace
 import pageAction.PageActionNamespace
@@ -45,17 +49,52 @@ import test.TestNamespace
 import theme.ThemeNamespace
 import topSites.TopSitesNamespace
 import types.TypesNamespace
+import urlbar.UrlbarNamespace
 import userScripts.UserScriptsNamespace
 import webNavigation.WebNavigationNamespace
 import webRequest.WebRequestNamespace
 import windows.WindowsNamespace
 
 external class Browser {
-    val alarms: AlarmsNamespace
-
     val manifest: ManifestNamespace
 
     val bookmarks: BookmarksNamespace
+
+    val commands: CommandsNamespace
+
+    val devtools: DevtoolsNamespace
+
+    val find: FindNamespace
+
+    val history: HistoryNamespace
+
+    val contextMenus: ContextMenusNamespace
+
+    val menus: MenusNamespace
+
+    val normandyAddonStudy: NormandyAddonStudyNamespace
+
+    val omnibox: OmniboxNamespace
+
+    val pkcs11: Pkcs11Namespace
+
+    val search: SearchNamespace
+
+    val sessions: SessionsNamespace
+
+    val sidebarAction: SidebarActionNamespace
+
+    val tabs: TabsNamespace
+
+    val topSites: TopSitesNamespace
+
+    val urlbar: UrlbarNamespace
+
+    val windows: WindowsNamespace
+
+    val activityLog: ActivityLogNamespace
+
+    val alarms: AlarmsNamespace
 
     val browserAction: BrowserActionNamespace
 
@@ -63,17 +102,15 @@ external class Browser {
 
     val browsingData: BrowsingDataNamespace
 
-    val clipboard: ClipboardNamespace
+    val captivePortal: CaptivePortalNamespace
 
-    val commands: CommandsNamespace
+    val clipboard: ClipboardNamespace
 
     val contentScripts: ContentScriptsNamespace
 
     val contextualIdentities: ContextualIdentitiesNamespace
 
     val cookies: CookiesNamespace
-
-    val devtools: DevtoolsNamespace
 
     val dns: DnsNamespace
 
@@ -87,11 +124,7 @@ external class Browser {
 
     val extensionTypes: ExtensionTypesNamespace
 
-    val find: FindNamespace
-
     val geckoProfiler: GeckoProfilerNamespace
-
-    val history: HistoryNamespace
 
     val i18n: I18nNamespace
 
@@ -101,19 +134,13 @@ external class Browser {
 
     val management: ManagementNamespace
 
-    val contextMenus: ContextMenusNamespace
-
-    val menus: MenusNamespace
+    val networkStatus: NetworkStatusNamespace
 
     val notifications: NotificationsNamespace
-
-    val omnibox: OmniboxNamespace
 
     val pageAction: PageActionNamespace
 
     val permissions: PermissionsNamespace
-
-    val pkcs11: Pkcs11Namespace
 
     val privacy: PrivacyNamespace
 
@@ -121,23 +148,13 @@ external class Browser {
 
     val runtime: RuntimeNamespace
 
-    val search: SearchNamespace
-
-    val sessions: SessionsNamespace
-
-    val sidebarAction: SidebarActionNamespace
-
     val storage: StorageNamespace
-
-    val tabs: TabsNamespace
 
     val telemetry: TelemetryNamespace
 
     val test: TestNamespace
 
     val theme: ThemeNamespace
-
-    val topSites: TopSitesNamespace
 
     val types: TypesNamespace
 
@@ -146,8 +163,6 @@ external class Browser {
     val webNavigation: WebNavigationNamespace
 
     val webRequest: WebRequestNamespace
-
-    val windows: WindowsNamespace
 }
 
 external class Event<in T> {

@@ -21,7 +21,7 @@ import webextensions.Event
         "document_idle".
  */
 class UserScriptOptions(
-    var js: Array<ExtensionFileOrCode>? = null,
+    var js: Array<ExtensionFileOrCode>,
     var scriptMetadata: PlainJSONValue? = null,
     var matches: Array<MatchPattern>,
     var excludeMatches: Array<MatchPattern>? = null,

@@ -75,6 +75,27 @@ class Options(
     var usePingSender: Boolean? = null
 )
 
+/**
+ * The data payload for the ping, which will be encrypted.
+ */
+@Suppress("NOTHING_TO_INLINE", "UnsafeCastFromDynamic")
+class Message2() {
+    inline operator fun get(key: String): dynamic = asDynamic()[key]
+    inline operator fun set(key: String, value: dynamic) {
+        asDynamic()[key] = value
+    }
+}
+
+/**
+ * Options object.
+ * @param schemaName Schema name used for payload.
+ * @param schemaVersion Schema version used for payload.
+ */
+class Options2(
+    var schemaName: String,
+    var schemaVersion: Int
+)
+
 @Suppress("NOTHING_TO_INLINE", "UnsafeCastFromDynamic")
 class Value() {
     inline operator fun get(key: String): dynamic = asDynamic()[key]
@@ -86,6 +107,18 @@ class Value() {
 /**
  * The value to set the scalar to */
 typealias Value2 = Any
+
+@Suppress("NOTHING_TO_INLINE", "UnsafeCastFromDynamic")
+class Value3() {
+    inline operator fun get(key: String): dynamic = asDynamic()[key]
+    inline operator fun set(key: String, value: dynamic) {
+        asDynamic()[key] = value
+    }
+}
+
+/**
+ * The value to set the scalar to. */
+typealias Value4 = Any
 
 /**
  * An optional object of the form (string -> string). It should only contain registered extra keys.
@@ -134,7 +167,13 @@ external class TelemetryNamespace {
     ): Promise<Any>
 
     /**
-     * Checks if Telemetry is enabled.
+     * Submits a custom ping to the Telemetry back-end, with an encrypted payload. Requires a
+            telemetry entry in the manifest to be used.
+     */
+    fun submitEncryptedPing(message: Message2, options: Options2): Promise<Any>
+
+    /**
+     * Checks if Telemetry upload is enabled.
      */
     fun canUpload(): Promise<Any>
 
@@ -173,13 +212,71 @@ external class TelemetryNamespace {
     fun scalarSetMaximum(name: String, value: Int): Promise<Any>
 
     /**
+     * Adds the value to the given keyed scalar.
+     */
+    fun keyedScalarAdd(
+        name: String,
+        key: String,
+        value: Int
+    ): Promise<Any>
+
+    /**
+     * Sets the keyed scalar to the given value. Throws if the value type doesn't match the scalar
+            type.
+     */
+    fun keyedScalarSet(
+        name: String,
+        key: String,
+        value: String
+    ): Promise<Any>
+
+    /**
+     * Sets the keyed scalar to the given value. Throws if the value type doesn't match the scalar
+            type.
+     */
+    fun keyedScalarSet(
+        name: String,
+        key: String,
+        value: Boolean
+    ): Promise<Any>
+
+    /**
+     * Sets the keyed scalar to the given value. Throws if the value type doesn't match the scalar
+            type.
+     */
+    fun keyedScalarSet(
+        name: String,
+        key: String,
+        value: Int
+    ): Promise<Any>
+
+    /**
+     * Sets the keyed scalar to the given value. Throws if the value type doesn't match the scalar
+            type.
+     */
+    fun keyedScalarSet(
+        name: String,
+        key: String,
+        value: Value3
+    ): Promise<Any>
+
+    /**
+     * Sets the keyed scalar to the maximum of the current and the passed value
+     */
+    fun keyedScalarSetMaximum(
+        name: String,
+        key: String,
+        value: Int
+    ): Promise<Any>
+
+    /**
      * Record an event in Telemetry. Throws when trying to record an unknown event.
      */
     fun recordEvent(
         category: String,
         method: String,
         `object`: String,
-        value: Int? = definedExternally,
+        value: String? = definedExternally,
         extra: Extra? = definedExternally
     ): Promise<Any>
 

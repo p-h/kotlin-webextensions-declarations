@@ -1,10 +1,9 @@
 package proxy
 
-import kotlin.Deprecated
-import kotlin.js.Promise
 import types.Setting
 import webRequest.HttpHeaders
 import webRequest.ResourceType
+import webRequest.UrlClassification
 import webextensions.Event
 
 /**
@@ -12,7 +11,7 @@ import webextensions.Event
  * @param proxyType The type of proxy to use.
  * @param http The address of the http proxy, can include a port.
  * @param httpProxyAll Use the http proxy server for all protocols.
- * @param ftp The address of the ftp proxy, can include a port.
+ * @param ftp The address of the ftp proxy, can include a port.  Deprecated since Firefox 88.
  * @param ssl The address of the ssl proxy, can include a port.
  * @param socks The address of the socks proxy, can include a port.
  * @param socksVersion The version of the socks proxy.
@@ -20,6 +19,9 @@ import webextensions.Event
  * @param autoConfigUrl A URL to use to configure the proxy.
  * @param autoLogin Do not prompt for authentication if password is saved.
  * @param proxyDNS Proxy DNS when using SOCKS v5.
+ * @param respectBeConservative  If true (the default value), do not use newer TLS protocol features
+        that might have interoperability problems on the Internet. This is intended only for use
+        with critical infrastructure like the updates, and is only available to privileged addons.
  */
 class ProxyConfig(
     var proxyType: String? = null,
@@ -32,7 +34,8 @@ class ProxyConfig(
     var passthrough: String? = null,
     var autoConfigUrl: String? = null,
     var autoLogin: Boolean? = null,
-    var proxyDNS: Boolean? = null
+    var proxyDNS: Boolean? = null,
+    var respectBeConservative: Boolean? = null
 )
 
 /**
@@ -46,16 +49,18 @@ class ProxyConfig(
         the outer frame. Frame IDs are unique within a tab.
  * @param parentFrameId ID of frame that wraps the frame which sent the request. Set to -1 if no
         parent frame exists.
+ * @param incognito True for private browsing requests.
+ * @param cookieStoreId The cookie store ID of the contextual identity.
  * @param originUrl URL of the resource that triggered this request.
  * @param documentUrl URL of the page into which the requested resource will be loaded.
  * @param tabId The ID of the tab in which the request takes place. Set to -1 if the request isn't
         related to a tab.
  * @param type How the requested resource will be used.
  * @param timeStamp The time when this signal is triggered, in milliseconds since the epoch.
- * @param ip The server IP address that the request was actually sent to. Note that it may be a
-        literal IPv6 address.
  * @param fromCache Indicates if this response was fetched from disk cache.
  * @param requestHeaders The HTTP request headers that are going to be sent out with this request.
+ * @param urlClassification Url classification if the request has been classified.
+ * @param thirdParty Indicates if this request and its content window hierarchy is third party.
  */
 class Details(
     var requestId: String,
@@ -63,19 +68,20 @@ class Details(
     var method: String,
     var frameId: Int,
     var parentFrameId: Int,
+    var incognito: Boolean? = null,
+    var cookieStoreId: String? = null,
     var originUrl: String? = null,
     var documentUrl: String? = null,
     var tabId: Int,
     var type: ResourceType,
     var timeStamp: Float,
-    var ip: String? = null,
     var fromCache: Boolean,
-    var requestHeaders: HttpHeaders? = null
+    var requestHeaders: HttpHeaders? = null,
+    var urlClassification: UrlClassification,
+    var thirdParty: Boolean
 )
 
 typealias Error = Any
-
-typealias Error2 = Any
 
 external class ProxyNamespace {
     /**
@@ -85,35 +91,13 @@ external class ProxyNamespace {
     val onRequest: Event<(details: Details) -> Unit>
 
     /**
-     * Notifies about proxy script errors.
+     * Notifies about errors caused by the invalid use of the proxy API.
      *
      * @param error null */
     val onError: Event<(error: Error) -> Unit>
 
     /**
-     * Please use $(ref:proxy.onError).
-     *
-     * @param error null */
-    val onProxyError: Event<(error: Error2) -> Unit>
-
-    /**
      * Configures proxy settings. This setting's value is an object of type ProxyConfig.
      */
     var settings: Setting
-
-    /**
-     * Registers the proxy script for the extension.
-     */
-    fun register(url: String): Promise<Any>
-
-    /**
-     * Unregisters the proxy script for the extension.
-     */
-    fun unregister(): Promise<Any>
-
-    /**
-     * Registers the proxy script for the extension.
-     */
-    @Deprecated("Please use $(ref:proxy.register)")
-    fun registerProxyScript(url: String): Promise<Any>
 }

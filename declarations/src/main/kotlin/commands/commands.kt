@@ -1,7 +1,6 @@
 package commands
 
 import kotlin.js.Promise
-import manifest.KeyName
 import webextensions.Event
 
 /**
@@ -23,7 +22,7 @@ class Command(
 class Detail(
     var name: String,
     var description: String? = null,
-    var shortcut: KeyName? = null
+    var shortcut: String? = null
 )
 
 external class CommandsNamespace {

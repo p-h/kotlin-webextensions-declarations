@@ -28,12 +28,15 @@ typealias OnCompletedOptions = String
         filtered out.
  * @param types A list of request types. Requests that cannot match any of the types will be
         filtered out.
+ * @param incognito If provided, requests that do not match the incognito state will be filtered
+        out.
  */
 class RequestFilter(
     var urls: Array<String>,
     var types: Array<ResourceType>? = null,
     var tabId: Int? = null,
-    var windowId: Int? = null
+    var windowId: Int? = null,
+    var incognito: Boolean? = null
 )
 
 /**
@@ -142,6 +145,24 @@ class UploadData(
 )
 
 /**
+ * Tracking flags that match our internal tracking classification */
+typealias UrlClassificationFlags = String
+
+/**
+ * If the request has been classified this is an array of $(ref:UrlClassificationFlags). */
+typealias UrlClassificationParty = Array<UrlClassificationFlags>
+
+/**
+ * @param firstParty Classification flags if the request has been classified and it is first party.
+ * @param thirdParty Classification flags if the request has been classified and it or its window
+        hierarchy is third party.
+ */
+class UrlClassification(
+    var firstParty: UrlClassificationParty,
+    var thirdParty: UrlClassificationParty
+)
+
+/**
  * @param name Name of the HTTP header.
  * @param value Value of the HTTP header if it can be represented by UTF-8.
  * @param binaryValue Value of the HTTP header if it cannot be represented by UTF-8, stored as
@@ -229,6 +250,8 @@ class RequestBody(
         the outer frame. Frame IDs are unique within a tab.
  * @param parentFrameId ID of frame that wraps the frame which sent the request. Set to -1 if no
         parent frame exists.
+ * @param incognito True for private browsing requests.
+ * @param cookieStoreId The cookie store ID of the contextual identity.
  * @param originUrl URL of the resource that triggered this request.
  * @param documentUrl URL of the page into which the requested resource will be loaded.
  * @param requestBody Contains the HTTP request body data. Only provided if extraInfoSpec contains
@@ -237,6 +260,8 @@ class RequestBody(
         related to a tab.
  * @param type How the requested resource will be used.
  * @param timeStamp The time when this signal is triggered, in milliseconds since the epoch.
+ * @param urlClassification Tracking classification if the request has been classified.
+ * @param thirdParty Indicates if this request and its content window hierarchy is third party.
  */
 class Details(
     var requestId: String,
@@ -244,12 +269,16 @@ class Details(
     var method: String,
     var frameId: Int,
     var parentFrameId: Int,
+    var incognito: Boolean? = null,
+    var cookieStoreId: String? = null,
     var originUrl: String? = null,
     var documentUrl: String? = null,
     var requestBody: RequestBody? = null,
     var tabId: Int,
     var type: ResourceType,
-    var timeStamp: Float
+    var timeStamp: Float,
+    var urlClassification: UrlClassification? = null,
+    var thirdParty: Boolean
 )
 
 /**
@@ -263,6 +292,8 @@ class Details(
         the outer frame. Frame IDs are unique within a tab.
  * @param parentFrameId ID of frame that wraps the frame which sent the request. Set to -1 if no
         parent frame exists.
+ * @param incognito True for private browsing requests.
+ * @param cookieStoreId The cookie store ID of the contextual identity.
  * @param originUrl URL of the resource that triggered this request.
  * @param documentUrl URL of the page into which the requested resource will be loaded.
  * @param tabId The ID of the tab in which the request takes place. Set to -1 if the request isn't
@@ -270,6 +301,8 @@ class Details(
  * @param type How the requested resource will be used.
  * @param timeStamp The time when this signal is triggered, in milliseconds since the epoch.
  * @param requestHeaders The HTTP request headers that are going to be sent out with this request.
+ * @param urlClassification Tracking classification if the request has been classified.
+ * @param thirdParty Indicates if this request and its content window hierarchy is third party.
  */
 class Details2(
     var requestId: String,
@@ -277,12 +310,16 @@ class Details2(
     var method: String,
     var frameId: Int,
     var parentFrameId: Int,
+    var incognito: Boolean? = null,
+    var cookieStoreId: String? = null,
     var originUrl: String? = null,
     var documentUrl: String? = null,
     var tabId: Int,
     var type: ResourceType,
     var timeStamp: Float,
-    var requestHeaders: HttpHeaders? = null
+    var requestHeaders: HttpHeaders? = null,
+    var urlClassification: UrlClassification? = null,
+    var thirdParty: Boolean
 )
 
 /**
@@ -296,6 +333,8 @@ class Details2(
         the outer frame. Frame IDs are unique within a tab.
  * @param parentFrameId ID of frame that wraps the frame which sent the request. Set to -1 if no
         parent frame exists.
+ * @param incognito True for private browsing requests.
+ * @param cookieStoreId The cookie store ID of the contextual identity.
  * @param originUrl URL of the resource that triggered this request.
  * @param documentUrl URL of the page into which the requested resource will be loaded.
  * @param tabId The ID of the tab in which the request takes place. Set to -1 if the request isn't
@@ -303,6 +342,8 @@ class Details2(
  * @param type How the requested resource will be used.
  * @param timeStamp The time when this signal is triggered, in milliseconds since the epoch.
  * @param requestHeaders The HTTP request headers that have been sent out with this request.
+ * @param urlClassification Tracking classification if the request has been classified.
+ * @param thirdParty Indicates if this request and its content window hierarchy is third party.
  */
 class Details3(
     var requestId: String,
@@ -310,12 +351,16 @@ class Details3(
     var method: String,
     var frameId: Int,
     var parentFrameId: Int,
+    var incognito: Boolean? = null,
+    var cookieStoreId: String? = null,
     var originUrl: String? = null,
     var documentUrl: String? = null,
     var tabId: Int,
     var type: ResourceType,
     var timeStamp: Float,
-    var requestHeaders: HttpHeaders? = null
+    var requestHeaders: HttpHeaders? = null,
+    var urlClassification: UrlClassification? = null,
+    var thirdParty: Boolean
 )
 
 /**
@@ -329,6 +374,8 @@ class Details3(
         the outer frame. Frame IDs are unique within a tab.
  * @param parentFrameId ID of frame that wraps the frame which sent the request. Set to -1 if no
         parent frame exists.
+ * @param incognito True for private browsing requests.
+ * @param cookieStoreId The cookie store ID of the contextual identity.
  * @param originUrl URL of the resource that triggered this request.
  * @param documentUrl URL of the page into which the requested resource will be loaded.
  * @param tabId The ID of the tab in which the request takes place. Set to -1 if the request isn't
@@ -339,6 +386,8 @@ class Details3(
         responses (i.e., responses that lack a status line).
  * @param responseHeaders The HTTP response headers that have been received with this response.
  * @param statusCode Standard HTTP status code returned by the server.
+ * @param urlClassification Tracking classification if the request has been classified.
+ * @param thirdParty Indicates if this request and its content window hierarchy is third party.
  */
 class Details4(
     var requestId: String,
@@ -346,6 +395,8 @@ class Details4(
     var method: String,
     var frameId: Int,
     var parentFrameId: Int,
+    var incognito: Boolean? = null,
+    var cookieStoreId: String? = null,
     var originUrl: String? = null,
     var documentUrl: String? = null,
     var tabId: Int,
@@ -353,7 +404,9 @@ class Details4(
     var timeStamp: Float,
     var statusLine: String,
     var responseHeaders: HttpHeaders? = null,
-    var statusCode: Int
+    var statusCode: Int,
+    var urlClassification: UrlClassification? = null,
+    var thirdParty: Boolean
 )
 
 /**
@@ -372,6 +425,8 @@ class Challenger(var host: String, var port: Int)
         the outer frame. Frame IDs are unique within a tab.
  * @param parentFrameId ID of frame that wraps the frame which sent the request. Set to -1 if no
         parent frame exists.
+ * @param incognito True for private browsing requests.
+ * @param cookieStoreId The cookie store ID of the contextual identity.
  * @param originUrl URL of the resource that triggered this request.
  * @param documentUrl URL of the page into which the requested resource will be loaded.
  * @param tabId The ID of the tab in which the request takes place. Set to -1 if the request isn't
@@ -387,6 +442,8 @@ class Challenger(var host: String, var port: Int)
         responses (i.e., responses that lack a status line) or an empty string if there are no
         headers.
  * @param statusCode Standard HTTP status code returned by the server.
+ * @param urlClassification Tracking classification if the request has been classified.
+ * @param thirdParty Indicates if this request and its content window hierarchy is third party.
  */
 class Details5(
     var requestId: String,
@@ -394,6 +451,8 @@ class Details5(
     var method: String,
     var frameId: Int,
     var parentFrameId: Int,
+    var incognito: Boolean? = null,
+    var cookieStoreId: String? = null,
     var originUrl: String? = null,
     var documentUrl: String? = null,
     var tabId: Int,
@@ -405,7 +464,9 @@ class Details5(
     var isProxy: Boolean,
     var responseHeaders: HttpHeaders? = null,
     var statusLine: String,
-    var statusCode: Int
+    var statusCode: Int,
+    var urlClassification: UrlClassification? = null,
+    var thirdParty: Boolean
 )
 
 /**
@@ -419,6 +480,8 @@ class Details5(
         the outer frame. Frame IDs are unique within a tab.
  * @param parentFrameId ID of frame that wraps the frame which sent the request. Set to -1 if no
         parent frame exists.
+ * @param incognito True for private browsing requests.
+ * @param cookieStoreId The cookie store ID of the contextual identity.
  * @param originUrl URL of the resource that triggered this request.
  * @param documentUrl URL of the page into which the requested resource will be loaded.
  * @param tabId The ID of the tab in which the request takes place. Set to -1 if the request isn't
@@ -433,6 +496,8 @@ class Details5(
  * @param statusLine HTTP status line of the response or the 'HTTP/0.9 200 OK' string for HTTP/0.9
         responses (i.e., responses that lack a status line) or an empty string if there are no
         headers.
+ * @param urlClassification Tracking classification if the request has been classified.
+ * @param thirdParty Indicates if this request and its content window hierarchy is third party.
  */
 class Details6(
     var requestId: String,
@@ -440,6 +505,8 @@ class Details6(
     var method: String,
     var frameId: Int,
     var parentFrameId: Int,
+    var incognito: Boolean? = null,
+    var cookieStoreId: String? = null,
     var originUrl: String? = null,
     var documentUrl: String? = null,
     var tabId: Int,
@@ -449,7 +516,9 @@ class Details6(
     var fromCache: Boolean,
     var statusCode: Int,
     var responseHeaders: HttpHeaders? = null,
-    var statusLine: String
+    var statusLine: String,
+    var urlClassification: UrlClassification? = null,
+    var thirdParty: Boolean
 )
 
 /**
@@ -463,6 +532,8 @@ class Details6(
         the outer frame. Frame IDs are unique within a tab.
  * @param parentFrameId ID of frame that wraps the frame which sent the request. Set to -1 if no
         parent frame exists.
+ * @param incognito True for private browsing requests.
+ * @param cookieStoreId The cookie store ID of the contextual identity.
  * @param originUrl URL of the resource that triggered this request.
  * @param documentUrl URL of the page into which the requested resource will be loaded.
  * @param tabId The ID of the tab in which the request takes place. Set to -1 if the request isn't
@@ -478,6 +549,8 @@ class Details6(
  * @param statusLine HTTP status line of the response or the 'HTTP/0.9 200 OK' string for HTTP/0.9
         responses (i.e., responses that lack a status line) or an empty string if there are no
         headers.
+ * @param urlClassification Tracking classification if the request has been classified.
+ * @param thirdParty Indicates if this request and its content window hierarchy is third party.
  */
 class Details7(
     var requestId: String,
@@ -485,6 +558,8 @@ class Details7(
     var method: String,
     var frameId: Int,
     var parentFrameId: Int,
+    var incognito: Boolean? = null,
+    var cookieStoreId: String? = null,
     var originUrl: String? = null,
     var documentUrl: String? = null,
     var tabId: Int,
@@ -495,7 +570,9 @@ class Details7(
     var statusCode: Int,
     var redirectUrl: String,
     var responseHeaders: HttpHeaders? = null,
-    var statusLine: String
+    var statusLine: String,
+    var urlClassification: UrlClassification? = null,
+    var thirdParty: Boolean
 )
 
 /**
@@ -509,6 +586,8 @@ class Details7(
         the outer frame. Frame IDs are unique within a tab.
  * @param parentFrameId ID of frame that wraps the frame which sent the request. Set to -1 if no
         parent frame exists.
+ * @param incognito True for private browsing requests.
+ * @param cookieStoreId The cookie store ID of the contextual identity.
  * @param originUrl URL of the resource that triggered this request.
  * @param documentUrl URL of the page into which the requested resource will be loaded.
  * @param tabId The ID of the tab in which the request takes place. Set to -1 if the request isn't
@@ -523,6 +602,12 @@ class Details7(
  * @param statusLine HTTP status line of the response or the 'HTTP/0.9 200 OK' string for HTTP/0.9
         responses (i.e., responses that lack a status line) or an empty string if there are no
         headers.
+ * @param urlClassification Tracking classification if the request has been classified.
+ * @param thirdParty Indicates if this request and its content window hierarchy is third party.
+ * @param requestSize For http requests, the bytes transferred in the request. Only available in
+        onCompleted.
+ * @param responseSize For http requests, the bytes received in the request. Only available in
+        onCompleted.
  */
 class Details8(
     var requestId: String,
@@ -530,6 +615,8 @@ class Details8(
     var method: String,
     var frameId: Int,
     var parentFrameId: Int,
+    var incognito: Boolean? = null,
+    var cookieStoreId: String? = null,
     var originUrl: String? = null,
     var documentUrl: String? = null,
     var tabId: Int,
@@ -539,7 +626,11 @@ class Details8(
     var fromCache: Boolean,
     var statusCode: Int,
     var responseHeaders: HttpHeaders? = null,
-    var statusLine: String
+    var statusLine: String,
+    var urlClassification: UrlClassification,
+    var thirdParty: Boolean,
+    var requestSize: Int,
+    var responseSize: Int
 )
 
 /**
@@ -553,6 +644,8 @@ class Details8(
         the outer frame. Frame IDs are unique within a tab.
  * @param parentFrameId ID of frame that wraps the frame which sent the request. Set to -1 if no
         parent frame exists.
+ * @param incognito True for private browsing requests.
+ * @param cookieStoreId The cookie store ID of the contextual identity.
  * @param originUrl URL of the resource that triggered this request.
  * @param documentUrl URL of the page into which the requested resource will be loaded.
  * @param tabId The ID of the tab in which the request takes place. Set to -1 if the request isn't
@@ -564,6 +657,8 @@ class Details8(
  * @param fromCache Indicates if this response was fetched from disk cache.
  * @param error The error description. This string is <em>not</em> guaranteed to remain backwards
         compatible between releases. You must not parse and act based upon its content.
+ * @param urlClassification Tracking classification if the request has been classified.
+ * @param thirdParty Indicates if this request and its content window hierarchy is third party.
  */
 class Details9(
     var requestId: String,
@@ -571,6 +666,8 @@ class Details9(
     var method: String,
     var frameId: Int,
     var parentFrameId: Int,
+    var incognito: Boolean? = null,
+    var cookieStoreId: String? = null,
     var originUrl: String? = null,
     var documentUrl: String? = null,
     var tabId: Int,
@@ -578,7 +675,9 @@ class Details9(
     var timeStamp: Float,
     var ip: String? = null,
     var fromCache: Boolean,
-    var error: String
+    var error: String,
+    var urlClassification: UrlClassification? = null,
+    var thirdParty: Boolean
 )
 
 external class WebRequestNamespace {

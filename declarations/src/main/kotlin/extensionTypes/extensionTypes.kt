@@ -5,15 +5,20 @@ package extensionTypes
 typealias ImageFormat = String
 
 /**
- * Details about the format and quality of an image.
+ * Details about the format, quality, area and scale of the capture.
  * @param format The format of the resulting image.  Default is <code>"jpeg"</code>.
  * @param quality When format is <code>"jpeg"</code>, controls the quality of the resulting image. 
         This value is ignored for PNG images.  As quality is decreased, the resulting image will
         have more visual artifacts, and the number of bytes needed to store it will decrease.
+ * @param rect The area of the document to capture, in CSS pixels, relative to the page.  If
+        omitted, capture the visible viewport.
+ * @param scale The scale of the resulting image.  Defaults to <code>devicePixelRatio</code>.
  */
 class ImageDetails(
     var format: ImageFormat? = null,
-    var quality: Int? = null
+    var quality: Int? = null,
+    var rect: Rect? = null,
+    var scale: Float? = null
 )
 
 /**
@@ -61,5 +66,16 @@ typealias ExtensionFileOrCode = Any
 /**
  * A plain JSON value */
 typealias PlainJSONValue = Any
+
+/**
+ * The area of the document to capture, in CSS pixels, relative to the page.  If omitted, capture
+        the visible viewport.
+ */
+class Rect(
+    var x: Float,
+    var y: Float,
+    var width: Float,
+    var height: Float
+)
 
 external class ExtensionTypesNamespace

@@ -2,10 +2,10 @@ package tabs
 
 import extensionTypes.ImageDetails
 import extensionTypes.InjectDetails
+import kotlin.js.Promise
 import runtime.Port
 import webextensions.Event
 import windows.Window
-import kotlin.js.Promise
 
 /**
  * An event that caused a muted state change. */
@@ -135,7 +135,8 @@ class ZoomSettings(
 )
 
 /**
- * The page settings including: orientation, scale, background, margins, headers, footers.
+ * Defines the page settings to be used when saving a page as a pdf file.
+ * @param toFileName The name of the file. May include optional .pdf extension.
  * @param paperSizeUnit The page size unit: 0 = inches, 1 = millimeters. Default: 0.
  * @param paperWidth The paper width in paper size units. Default: 8.5.
  * @param paperHeight The paper height in paper size units. Default: 11.0.
@@ -169,6 +170,7 @@ class ZoomSettings(
  * @param footerRight The text for the page's right footer. Default: '&D'.
  */
 class PageSettings(
+    var toFileName: String? = null,
     var paperSizeUnit: Int? = null,
     var paperWidth: Float? = null,
     var paperHeight: Float? = null,
@@ -268,6 +270,17 @@ class CreateProperties(
     var openInReaderMode: Boolean? = null,
     var discarded: Boolean? = null,
     var title: String? = null
+)
+
+/**
+ * @param index The position the new tab should take in the window. The provided value will be
+        clamped to between zero and the number of tabs in the window.
+ * @param active Whether the tab should become the active tab in the window. Does not affect whether
+        the window is focused (see $(ref:windows.update)). Defaults to <var>true</var>.
+ */
+class DuplicateProperties(
+    var index: Int? = null,
+    var active: Boolean? = null
 )
 
 /**
@@ -650,7 +663,8 @@ external class TabsNamespace {
     /**
      * Duplicates a tab.
      */
-    fun duplicate(tabId: Int): Promise<Tab?>
+    fun duplicate(tabId: Int, duplicateProperties: DuplicateProperties? = definedExternally):
+            Promise<Tab?>
 
     /**
      * Gets all tabs that have the specified properties, or all tabs if no properties are specified.
@@ -687,6 +701,11 @@ external class TabsNamespace {
             definedExternally): Promise<Any>
 
     /**
+     * Warm up a tab
+     */
+    fun warmup(tabId: Int): Promise<Any>
+
+    /**
      * Closes one or more tabs.
      */
     fun remove(tabIds: Int): Promise<Any>
@@ -717,14 +736,14 @@ external class TabsNamespace {
     fun toggleReaderMode(tabId: Int? = definedExternally): Promise<Any>
 
     /**
-     * Captures the visible area of a specified tab. You must have
+     * Captures an area of a specified tab. You must have
             $(topic:declare_permissions)[&lt;all_urls&gt;] permission to use this method.
      */
     fun captureTab(tabId: Int? = definedExternally, options: ImageDetails? = definedExternally):
             Promise<Any>
 
     /**
-     * Captures the visible area of the currently active tab in the specified window. You must have
+     * Captures an area of the currently active tab in the specified window. You must have
             $(topic:declare_permissions)[&lt;all_urls&gt;] permission to use this method.
      */
     fun captureVisibleTab(windowId: Int? = definedExternally, options: ImageDetails? =
@@ -816,4 +835,14 @@ external class TabsNamespace {
         tabId: Int? = definedExternally,
         options: Options2? = definedExternally
     ): Promise<Any>
+
+    /**
+     * Navigate to next page in tab's history, if available
+     */
+    fun goForward(tabId: Int? = definedExternally): Promise<Any>
+
+    /**
+     * Navigate to previous page in tab's history, if available.
+     */
+    fun goBack(tabId: Int? = definedExternally): Promise<Any>
 }

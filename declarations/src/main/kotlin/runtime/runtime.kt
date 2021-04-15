@@ -145,12 +145,7 @@ class ConnectInfo(
     var includeTlsChannelId: Boolean? = null
 )
 
-/**
- * @param toProxyScript If true, the message will be directed to the extension's proxy sandbox.
- */
-class Options(
-    var toProxyScript: Boolean? = null
-)
+class Options()
 
 @Suppress("NOTHING_TO_INLINE", "UnsafeCastFromDynamic")
 class DirectoryEntry() {
@@ -301,7 +296,7 @@ external class RuntimeNamespace {
      * Sets the URL to be visited upon uninstallation. This may be used to clean up server-side
             data, do analytics, and implement surveys. Maximum 255 characters.
      */
-    fun setUninstallURL(url: String): Promise<Any>
+    fun setUninstallURL(url: String? = definedExternally): Promise<Any>
 
     /**
      * Reloads the app or extension.

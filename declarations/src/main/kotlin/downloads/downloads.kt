@@ -50,7 +50,7 @@ class DownloadItem(
     var filename: String,
     var incognito: Boolean,
     var danger: DangerType,
-    var mime: String,
+    var mime: String? = null,
     var startTime: String,
     var endTime: String? = null,
     var estimatedEndTime: String? = null,
@@ -171,6 +171,8 @@ class Headers(
         <code>value</code> or <code>binaryValue</code>, restricted to those allowed by
         XMLHttpRequest.
  * @param body Post body.
+ * @param allowHttpErrors When this flag is set to <code>true</code>, then the browser will allow
+        downloads to proceed after encountering HTTP errors such as <code>404 Not Found</code>.
  */
 class Options(
     var url: String,
@@ -180,7 +182,8 @@ class Options(
     var saveAs: Boolean? = null,
     var method: String? = null,
     var headers: Array<Headers>? = null,
-    var body: String? = null
+    var body: String? = null,
+    var allowHttpErrors: Boolean? = null
 )
 
 /**

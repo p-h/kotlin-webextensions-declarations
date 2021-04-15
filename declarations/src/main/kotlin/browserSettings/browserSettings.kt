@@ -34,6 +34,11 @@ external class BrowserSettingsNamespace {
     var contextMenuShowEvent: Setting
 
     /**
+     * Returns whether the FTP protocol is enabled. Read-only.
+     */
+    var ftpProtocolEnabled: Setting
+
+    /**
      * Returns the value of the overridden home page. Read-only.
      */
     var homepageOverride: Setting
@@ -89,4 +94,16 @@ external class BrowserSettingsNamespace {
      * This setting controls whether the document's fonts are used.
      */
     var useDocumentFonts: Setting
+
+    /**
+     * This boolean setting controls whether zoom is applied to the full page or to text only.
+     */
+    var zoomFullPage: Setting
+
+    /**
+     * This boolean setting controls whether zoom is applied on a per-site basis or to the current
+            tab only. If privacy.resistFingerprinting is true, this setting has no effect and zoom
+            is applied to the current tab only.
+     */
+    var zoomSiteSpecific: Setting
 }

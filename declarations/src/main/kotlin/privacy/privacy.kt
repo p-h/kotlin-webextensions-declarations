@@ -6,6 +6,20 @@ import types.Setting
  * The IP handling policy of WebRTC. */
 typealias IPHandlingPolicy = String
 
+/**
+ * An object which describes TLS minimum and maximum versions.
+ * @param minimum The minimum TLS version supported.
+ * @param maximum The maximum TLS version supported.
+ */
+class tlsVersionRestrictionConfig(
+    var minimum: String? = null,
+    var maximum: String? = null
+)
+
+/**
+ * The mode for https-only mode. */
+typealias HTTPSOnlyModeOption = String
+
 external class NetworkNamespace {
     /**
      * If enabled, the browser attempts to speed up your web browsing experience by pre-resolving
@@ -26,6 +40,18 @@ external class NetworkNamespace {
             preference's value is of type IPHandlingPolicy, defaulting to <code>default</code>.
      */
     var webRTCIPHandlingPolicy: Setting
+
+    /**
+     * This property controls the minimum and maximum TLS versions. This setting's value is an
+            object of $(ref:tlsVersionRestrictionConfig).
+     */
+    var tlsVersionRestriction: Setting
+
+    /**
+     * Allow users to query the mode for 'HTTPS-Only Mode'. This setting's value is of type
+            HTTPSOnlyModeOption, defaulting to <code>never</code>.
+     */
+    var httpsOnlyMode: Setting
 }
 
 external class ServicesNamespace {

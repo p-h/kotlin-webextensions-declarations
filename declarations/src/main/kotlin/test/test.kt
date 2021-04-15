@@ -18,6 +18,12 @@ external class TestNamespace {
     val onMessage: Event<(message: String, argument: dynamic) -> Unit>
 
     /**
+     * Calls the callback function wrapped with user input set.  This is only used for internal unit
+            testing.
+     */
+    fun withHandlingUserInput(callback: () -> Unit)
+
+    /**
      * Notifies the browser process that test code running in the extension failed.  This is only
             used for internal unit testing.
      */
@@ -56,13 +62,13 @@ external class TestNamespace {
 
     fun assertRejects(
         promise: Promise<Any?>,
-        expectedError: ExpectedError? = definedExternally,
+        expectedError: ExpectedError,
         message: String? = definedExternally
     ): Promise<Any>
 
     fun assertThrows(
         func: () -> Unit,
-        expectedError: ExpectedError? = definedExternally,
+        expectedError: ExpectedError,
         message: String? = definedExternally
     )
 }

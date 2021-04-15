@@ -4,6 +4,7 @@ import kotlin.js.Promise
 import manifest.MatchPattern
 import manifest.OptionalPermission
 import manifest.Permission
+import webextensions.Event
 
 class Permissions(var permissions: Array<OptionalPermission>? = null, var origins:
         Array<MatchPattern>? = null)
@@ -12,6 +13,18 @@ class AnyPermissions(var permissions: Array<Permission>? = null, var origins: Ar
         null)
 
 external class PermissionsNamespace {
+    /**
+     * Fired when the extension acquires new permissions.
+     *
+     * @param permissions null */
+    val onAdded: Event<(permissions: Permissions) -> Unit>
+
+    /**
+     * Fired when permissions are removed from the extension.
+     *
+     * @param permissions null */
+    val onRemoved: Event<(permissions: Permissions) -> Unit>
+
     /**
      * Get a list of all the extension's permissions.
      */

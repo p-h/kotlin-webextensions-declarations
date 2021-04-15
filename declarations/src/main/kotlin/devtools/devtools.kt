@@ -1,8 +1,9 @@
 package devtools
 
+import kotlin.Suppress
+import kotlin.js.Promise
 import manifest.ExtensionURL
 import webextensions.Event
-import kotlin.js.Promise
 
 /**
  * Set to undefined if the resource content was set successfully; describes error otherwise.
@@ -248,14 +249,14 @@ external class PanelsNamespace {
      */
     var themeName: String
 
-//    /**
-//     * Creates an extension panel.
-//     */
-//    fun create(
-//        title: String,
-//        iconPath: String,
-//        pagePath: ExtensionURL
-//    ): Promise<ExtensionPanel>
+    /**
+     * Creates an extension panel.
+     */
+    fun create(
+        title: String,
+        iconPath: String,
+        pagePath: ExtensionURL
+    ): Promise<ExtensionPanel>
 
     /**
      * Creates an extension panel.

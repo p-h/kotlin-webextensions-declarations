@@ -180,6 +180,11 @@ external class SidebarActionNamespace {
     fun close(): Promise<Any>
 
     /**
+     * Toggles the extension sidebar in the active window.
+     */
+    fun toggle(): Promise<Any>
+
+    /**
      * Checks whether the sidebar action is open.
      */
     fun isOpen(details: Details6): Promise<Any>
